@@ -17,9 +17,42 @@ parser.add_argument("--num-workers", type=int, default=mp.cpu_count())
 parser.add_argument(
     "--mode", type=str, default="remove", choices=["remove", "annotate"]
 )
+parser.add_argument("--annotate-key", type=str, default="metadata.sa_remove_ranges")
+
 args = parser.parse_args()
-if args.mode == "annotate":
-    args.output_dir = args.output_dir.rstrip("/") + "_annotated"
+
+
+def set_nested_value(dictionary, path, value):
+    """
+    Set a value in a nested dictionary using dot notation.
+
+    Args:
+        dictionary: The dictionary to modify
+        path: A string with dot-separated keys (e.g., "a.b.c")
+        value: The value to set
+
+    Example:
+        >>> data = {}
+        >>> set_nested_value(data, "a.b.c", 42)
+        >>> print(data)
+        {'a': {'b': {'c': 42}}}
+    """
+    keys = path.split(".")
+    current = dictionary
+
+    # Navigate/create nested structure up to the last key
+    for key in keys[:-1]:
+        if key not in current:
+            current[key] = {}
+        elif not isinstance(current[key], dict):
+            # Overwrite non-dict values with a dict
+            current[key] = {}
+        current = current[key]
+
+    # Set the final value
+    current[keys[-1]] = value
+
+    return dictionary
 
 
 def write_worker(index_dir):
@@ -111,7 +144,7 @@ def write_worker(index_dir):
             "text": text,
         }
         if args.mode == "annotate":
-            item["sa_remove_ranges"] = doc_remove_ranges
+            set_nested_value(meta, args.annotate_key)
         item = {**item, **meta}
         curr_bufs.append(json.dumps(item) + "\n")
 

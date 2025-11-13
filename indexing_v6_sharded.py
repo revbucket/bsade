@@ -9,6 +9,7 @@ import resource
 import shutil
 import sys
 import time
+import warnings
 from collections import defaultdict
 
 import numpy as np
@@ -422,6 +423,12 @@ def main():
     os.makedirs(args.save_dir, exist_ok=True)
 
     assert sys.byteorder == "little"
+    try:
+        resource.setrlimit(resource.RLIMIT_NOFILE, (args.ulimit, args.ulimit))
+    except:
+        warnings.warn(
+            "Cannot raise the RLIMIT_NOFILE | probably okay for small cases, but be careful in large use cases!"
+        )
 
     prepare(args)
     build_sa(args)

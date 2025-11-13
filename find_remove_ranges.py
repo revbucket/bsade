@@ -3,6 +3,7 @@ import glob
 import multiprocessing as mp
 import os
 import resource
+import warnings
 
 from cpp_engine_dedup import EngineDedup_U8
 
@@ -17,6 +18,13 @@ parser.add_argument("--low-ram", default=False, action="store_true")
 parser.add_argument("--num-batches", type=int, default=1)
 parser.add_argument("--ulimit", type=int, default=1048576)
 args = parser.parse_args()
+
+try:
+    resource.setrlimit(resource.RLIMIT_NOFILE, (args.ulimit, args.ulimit))
+except:
+    warnings.warn(
+        "Cannot raise the RLIMIT_NOFILE | probably okay for small cases, but be careful in large use cases!"
+    )
 
 
 if args.mode == "naive":
