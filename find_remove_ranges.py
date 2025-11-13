@@ -7,14 +7,14 @@ import resource
 from cpp_engine_dedup import EngineDedup_U8
 
 parser = argparse.ArgumentParser()
-parser.add_argument("--index_dir", type=str, required=True)
+parser.add_argument("--index-dir", type=str, required=True)
 parser.add_argument("--minlen", type=int, required=True)
 parser.add_argument(
     "--mode", default="naive", choices=["naive", "parallel", "parallel_sharded"]
 )
-parser.add_argument("--num_threads", type=int, default=mp.cpu_count())
-parser.add_argument("--low_ram", default=False, action="store_true")
-parser.add_argument("--num_batches", type=int, default=1)
+parser.add_argument("--num-threads", type=int, default=mp.cpu_count())
+parser.add_argument("--low-ram", default=False, action="store_true")
+parser.add_argument("--num-batches", type=int, default=1)
 parser.add_argument("--ulimit", type=int, default=1048576)
 args = parser.parse_args()
 
