@@ -12,7 +12,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument("--index_dir", type=str, required=True)
 parser.add_argument("--minlen", type=int, default=None)
 parser.add_argument("--output-dir", type=str, required=True)
-parser.add_argument("--num-workers", type=int, default=1)
+parser.add_argument("--num-workers", type=int, default=mp.cpu_count())
 parser.add_argument(
     "--mode", type=str, default="remove", choices=["remove", "annotate"]
 )
