@@ -3,7 +3,8 @@
 # Designed to be as lightweight as possible and just have the installs for bsade only
 # (i.e., any tooling for setting up the file system or downloading data is _not_ included here!)
 
-pip install pybind11 
+
+pip install pybind11 numpy transformers
 
 # Try the first compilation command
 echo "Starting compilation..."
