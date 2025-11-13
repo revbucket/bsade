@@ -18,8 +18,7 @@ parser.add_argument(
     "--mode", type=str, default="remove", choices=["remove", "annotate"]
 )
 args = parser.parse_args()
-if args.mode == "annotate":
-    args.output_dir = args.output_dir.rstrip("/") + "_annotated"
+
 
 engine = EngineDedup_U8([args.index_dir], True)
 doc_cnt = engine.get_total_doc_cnt()
