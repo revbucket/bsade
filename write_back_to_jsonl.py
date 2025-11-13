@@ -7,6 +7,7 @@ import os
 import numpy as np
 import zstandard as zstd
 from cpp_engine_dedup import EngineDedup_U8
+from write_back_to_jsonl_sharded import set_nested_value
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--index_dir", type=str, required=True)
@@ -140,7 +141,7 @@ def write_worker(w, start_doc_ix, end_doc_ix, start_range_ix, end_range_ix):
             "text": text,
         }
         if args.mode == "annotate":
-            item["sa_remove_ranges"] = doc_remove_ranges
+            set_nested_value(meta, args.annotate_key, doc_remove_ranges)
         item = {**item, **meta}
         curr_bufs.append(json.dumps(item) + "\n")
 

@@ -144,7 +144,7 @@ def write_worker(index_dir):
             "text": text,
         }
         if args.mode == "annotate":
-            set_nested_value(meta, args.annotate_key)
+            set_nested_value(meta, args.annotate_key, doc_remove_ranges)
         item = {**item, **meta}
         curr_bufs.append(json.dumps(item) + "\n")
 
