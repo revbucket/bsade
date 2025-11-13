@@ -18,7 +18,6 @@ parser.add_argument("--num-batches", type=int, default=1)
 parser.add_argument("--ulimit", type=int, default=1048576)
 args = parser.parse_args()
 
-resource.setrlimit(resource.RLIMIT_NOFILE, (args.ulimit, args.ulimit))
 
 if args.mode == "naive":
     engine = EngineDedup_U8([args.index_dir], False)
